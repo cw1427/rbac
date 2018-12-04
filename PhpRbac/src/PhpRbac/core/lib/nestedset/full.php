@@ -227,7 +227,7 @@ class FullNestedSet extends BaseNestedSet implements ExtendedNestedSet
     function descendantsConditional($AbsoluteDepths=false,$ConditionString,$Rest=null)
     {
         if (!$AbsoluteDepths)
-            $DepthConcat="- (sub_tree.innerDepth )";
+            $DepthConcat="- (GROUP_CONCAT(sub_tree.innerDepth) )";
         $Arguments=func_get_args();
         array_shift($Arguments);
         array_shift($Arguments); //second argument, $AbsoluteDepths
@@ -271,7 +271,7 @@ class FullNestedSet extends BaseNestedSet implements ExtendedNestedSet
         $Arguments=func_get_args();
         array_shift($Arguments);
         $Query="
-            SELECT node.*, (COUNT(parent.{$this->id()})-1 - (sub_tree.innerDepth )) AS Depth
+            SELECT node.*, (COUNT(parent.{$this->id()})-1 - (GROUP_CONCAT(sub_tree.innerDepth) )) AS Depth
             FROM {$this->table()} AS node,
             	{$this->table()} AS parent,
             	{$this->table()} AS sub_parent,
